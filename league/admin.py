@@ -1,22 +1,22 @@
-from django.conf.urls import patterns, url
+from django.conf.urls import url
 from django.contrib import admin
 from django.shortcuts import render
 from league.models import Player, Match
 
 
 class MatchAdmin(admin.ModelAdmin):
-    list_display = ('__unicode__', 'timestamp')
-    list_filter = ('timestamp',)
-
     change_list_template = 'admin/league/match_list.html'
+
+    list_display = ('score', 'team1_player1', 'team1_player2', 'team2_player1',
+            'team2_player2', 'timestamp')
+    list_filter = ('timestamp',)
 
     def get_urls(self):
         urls = super(MatchAdmin, self).get_urls()
-        new_urls = patterns(
-            '',
+        new_urls = [
             url(r'^reorder/$', self.admin_site.admin_view(self.reorder),
                 name='league_match_reorder')
-        )
+        ]
         return new_urls + urls
 
     def reorder(self, request):
@@ -32,13 +32,14 @@ class MatchAdmin(admin.ModelAdmin):
 class PlayerAdmin(admin.ModelAdmin):
     change_list_template = 'admin/league/player_list.html'
 
+    list_display = ('name', 'rank', 'attacker_rank', 'defender_rank')
+
     def get_urls(self):
         urls = super(PlayerAdmin, self).get_urls()
-        new_urls = patterns(
-            '',
+        new_urls = [
             url(r'^refresh/$', self.admin_site.admin_view(self.refresh),
                 name='league_player_refresh')
-        )
+        ]
         return new_urls + urls
 
     def refresh(self, request):

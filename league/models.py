@@ -23,7 +23,7 @@ class Player(models.Model):
     class Meta:
         ordering = ['name']
 
-    def __unicode__(self):
+    def __str__(self):
         return self.name
 
     def get_absolute_url(self):
@@ -40,26 +40,32 @@ class Player(models.Model):
 class Match(models.Model):
     score_team1 = models.PositiveSmallIntegerField(
         validators=[MaxValueValidator(10)],
-        choices=[(i, i) for i in xrange(11)])
+        choices=[(i, i) for i in range(11)])
     score_team2 = models.PositiveSmallIntegerField(
         validators=[MaxValueValidator(10)],
-        choices=[(i, i) for i in xrange(11)])
-    team1_player1 = models.ForeignKey(Player, related_name='+')
-    team1_player2 = models.ForeignKey(Player, related_name='+')
-    team2_player1 = models.ForeignKey(Player, related_name='+')
-    team2_player2 = models.ForeignKey(Player, related_name='+')
+        choices=[(i, i) for i in range(11)])
+    team1_player1 = models.ForeignKey(Player, related_name='+',
+        verbose_name='Attacker first team')
+    team1_player2 = models.ForeignKey(Player, related_name='+',
+        verbose_name='Defender first team')
+    team2_player1 = models.ForeignKey(Player, related_name='+',
+        verbose_name='Attacker second team')
+    team2_player2 = models.ForeignKey(Player, related_name='+',
+        verbose_name='Defender second team')
     timestamp = models.DateTimeField(auto_now_add=True)
     timestamp.db_index = True
 
     class Meta:
         verbose_name_plural = "matches"
 
-    def __unicode__(self):
+    def __str__(self):
         return '%s / %s vs. %s / %s (%d:%d)' % (
             self.team1_player1, self.team1_player2,
             self.team2_player1, self.team2_player2,
             self.score_team1, self.score_team2)
 
+    def score(self):
+        return '%d:%d' % (self.score_team1, self.score_team2)
 
 class PlayerHistory(models.Model):
     player = models.ForeignKey(Player)

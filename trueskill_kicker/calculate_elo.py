@@ -15,7 +15,7 @@ elo = {}
 for result in reversed(results):
     p0, p1 = result[0].split(' / ')
     p2, p3 = result[1].split(' / ')
-    s0, s1 = map(int, result[2].split(':'))
+    s0, s1 = list(map(int, result[2].split(':')))
 
     # if result is draw, ignore it
     if s0 == s1:
@@ -42,5 +42,5 @@ for result in reversed(results):
     elo[p2] = elo.get(p2, 1200) - change
     elo[p3] = elo.get(p3, 1200) - change
 
-for score, player in reversed(sorted((v, k) for k, v in elo.iteritems())):
-    print player, score
+for score, player in reversed(sorted((v, k) for k, v in elo.items())):
+    print(player, score)

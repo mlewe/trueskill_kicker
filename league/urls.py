@@ -1,4 +1,4 @@
-from django.conf.urls import patterns, include, url
+from django.conf.urls import include, url
 from django.contrib import admin
 from rest_framework import routers
 
@@ -10,15 +10,13 @@ router = routers.DefaultRouter()
 router.register(r'matches', views.MatchViewSet)
 router.register(r'players', views.PlayerViewSet)
 
-urlpatterns = patterns(
-    '',
+urlpatterns = [
     # Examples:
     # url(r'^$', 'kicker_league.views.home', name='home'),
     # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^', include(patterns(
-        '',
+    url(r'^', include([
         url(r'^$', views.IndexView.as_view(), name='index'),
         url(r'^set_mode$', views.set_mode, name='set_mode'),
         url(r'^players$', views.PlayerView.as_view(), name='players'),
@@ -29,6 +27,6 @@ urlpatterns = patterns(
         url(r'^matches/enter$', views.MatchCreate.as_view(),
             name='matches_enter'),
         url(r'^about$', views.about, name='about'),
-        ), namespace='league')),
+        ], namespace='league')),
     url(r'api/', include(router.urls)),
-)
+]

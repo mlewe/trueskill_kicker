@@ -34,7 +34,7 @@ class MatchForm(forms.ModelForm):
         ]
 
     def clean(self, *args, **kwargs):
-        player_list = [v for k, v in self.cleaned_data.iteritems() if k in
+        player_list = [v for k, v in self.cleaned_data.items() if k in
                        ('team1_player1', 'team1_player2',
                         'team2_player1', 'team2_player2')]
         if len(player_list) > len(set(player_list)):
@@ -46,9 +46,6 @@ class MatchForm(forms.ModelForm):
 class MatchCreate(generic.CreateView):
     model = Match
     form_class = MatchForm
-
-    fields = ('score_team1', 'team1_player1', 'team1_player2',
-              'score_team2', 'team2_player1', 'team2_player2')
 
     def form_valid(self, form):
         from trueskill import Rating, rate

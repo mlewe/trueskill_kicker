@@ -1,14 +1,14 @@
-import urllib
-import urllib2
+import urllib.request, urllib.parse, urllib.error
+import urllib.request, urllib.error, urllib.parse
 from bs4 import BeautifulSoup
 import re
 
-url2 = raw_input("Enter URL:\n")
+url2 = input("Enter URL:\n")
 
 
 def open_soup(url, data=None):
     baseurl = 'http://' + url2 + '/kicker/index.php'
-    return BeautifulSoup(urllib2.urlopen(baseurl + url, data=data))
+    return BeautifulSoup(urllib.request.urlopen(baseurl + url, data=data))
 
 
 def scrape_player_ids():
@@ -24,7 +24,7 @@ def scrape_matches(history=False, player=None):
         url += '&a=history'
         if player is not None:
             url += '&s=s'
-            data = urllib.urlencode({'player': player})
+            data = urllib.parse.urlencode({'player': player})
 
     soup = open_soup(url, data=data)
 

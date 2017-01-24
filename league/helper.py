@@ -57,7 +57,7 @@ def refresh_scores():
     with transaction.atomic():
         PlayerHistory.objects.all().delete()
         PlayerHistory.objects.bulk_create(histories)
-        for pk, player in player_dict.iteritems():
+        for pk, player in player_dict.items():
             rating = rating_dict[pk]
             attacker_rating = attacker_rating_dict[pk]
             defender_rating = defender_rating_dict[pk]
